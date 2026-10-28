@@ -30,8 +30,6 @@ The same pipeline runs in two environments: **Real world** (a simulated fleet on
 - [4. The SmartCar Ops application](#4-the-smartcar-ops-application)
 - [Quick start](#quick-start)
 - [Repository layout](#repository-layout)
-- [Limitations and future work](#limitations-and-future-work)
-- [Team](#team)
 - [Credits](#credits)
 
 ---
@@ -302,31 +300,6 @@ docs/USAGE.md          detailed usage guide
 ```
 
 ---
-
-## Limitations and future work
-
-**Limitations**
-
-- **Potholes.** They remain hard to detect (recall 0.25): few examples, flat and varied.
-- **Prototype test set.** It is small and comes from the same video as training.
-- **Unseen objects.** These cause false detections on the real camera (furniture, hands).
-- **No Arduino ↔ server link.** The ultrasonic distance never reaches the dashboard, and the car's position is estimated between checkpoints.
-- **Simulated fleet.** In the real-world environment only CAR-01 sees real images.
-
-**Next steps**
-
-- **More real data.** Train on real ESP32-CAM frames from several places and lighting conditions; recording is already built into the Camera page.
-- **Better road model.** More pothole examples and a longer training run.
-- **Connect the Arduino.** Send the distance to the server and receive commands back.
-- **Faster and remote.** On-board inference (Raspberry Pi, Jetson) for lower latency; a remote server with alerts for critical obstacles.
-
----
-
-## Team
-
-AGUELLOUL Mouad · DAHIBI Wissal · ELAALGI Hatim · JOUNDI Amin · JOUNDI Ayman
-
-Module *Internet des objets*, Faculté des Sciences et Techniques de Béni Mellal, 2025/2026. Supervisor: Pr. BASLAM Mohamed.
 
 ## Credits
 
