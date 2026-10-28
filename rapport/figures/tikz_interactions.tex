@@ -1,0 +1,24 @@
+% Interactions entre les modules de l'application (chapitre 4)
+\begin{tikzpicture}[
+  p/.style={bloc,font=\footnotesize,minimum width=2.9cm,text width=2.7cm,minimum height=1.05cm,fill=bleufst!8},
+  lb/.style={font=\scriptsize\itshape,text=encre!80,fill=white,inner sep=1pt,align=center}]
+  \node[bloc,minimum width=3.8cm,text width=3.6cm,fill=gris!12,draw=gris,font=\footnotesize,minimum height=1.6cm] (core)
+       at (0,0) {\textbf{Données partagées}\\hub en mémoire\\SQLite, réglages};
+  \node[p] (ov)  at (0,4.0)    {Overview};
+  \node[p] (tr)  at (-5.0,2.6) {Tracking};
+  \node[p] (cam) at (-5.6,-0.6) {Camera};
+  \node[p] (ob)  at (-3.4,-3.8) {Obstacles};
+  \node[p] (pl)  at (3.4,-3.8) {Route planner};
+  \node[p] (st)  at (5.0,2.6)  {Live stats};
+  \node[p] (md)  at (5.6,-0.6)   {AI models};
+  \node[p] (sys) at (0,-5.6)    {Devices \& logs};
+  \foreach \n in {ov,tr,cam,ob,pl,st,md,sys} \draw[thick,draw=gris!70,dashed] (\n) -- (core);
+  \draw[fleche] (cam) -- node[lb,left] {détections\\$\rightarrow$ obstacles} (ob);
+  \draw[fleche] (ob) -- node[lb,below] {statut, gravité\\$\rightarrow$ risque des segments} (pl);
+  \draw[fleche] ([yshift=0.25cm]ob.east) -- node[lb,pos=0.62,above,sloped] {revues $\rightarrow$ faux positifs} (md.south west);
+  \draw[fleche] (sys) -- node[lb,left] {poids de danger\\$\rightarrow$ scores recalculés} (ob.south);
+  \draw[fleche] ([yshift=0.3cm]pl.west) -- node[lb,pos=0.5,above,sloped] {trajectoire active (prototype)} (cam.south east);
+  \draw[fleche] (tr) -- node[lb,above,sloped] {trajets} (ov);
+  \draw[fleche] (ob.north) to[out=95,in=-120] node[lb,pos=0.85,left] {à traiter} (ov.south west);
+  \draw[fleche] (cam.north) -- node[lb,left] {état du véhicule} (tr.south);
+\end{tikzpicture}

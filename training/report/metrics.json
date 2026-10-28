@@ -1,0 +1,159 @@
+{
+  "setting_best": "960 px + TTA",
+  "best": {
+    "precision": 0.656,
+    "recall": 0.548,
+    "f1": 0.597,
+    "map50": 0.574,
+    "map50_95": 0.346,
+    "inference_ms": 50.5
+  },
+  "best_per_class": {
+    "pothole": {
+      "objects": 299,
+      "precision": 0.626,
+      "recall": 0.268,
+      "f1": 0.375,
+      "map50": 0.33,
+      "map50_95": 0.119
+    },
+    "cone": {
+      "objects": 2358,
+      "precision": 0.681,
+      "recall": 0.763,
+      "f1": 0.72,
+      "map50": 0.744,
+      "map50_95": 0.464
+    },
+    "barrier": {
+      "objects": 1977,
+      "precision": 0.688,
+      "recall": 0.594,
+      "f1": 0.638,
+      "map50": 0.634,
+      "map50_95": 0.369
+    },
+    "roadwork_sign": {
+      "objects": 471,
+      "precision": 0.63,
+      "recall": 0.567,
+      "f1": 0.597,
+      "map50": 0.588,
+      "map50_95": 0.43
+    }
+  },
+  "live": {
+    "precision": 0.661,
+    "recall": 0.501,
+    "f1": 0.57,
+    "map50": 0.526,
+    "map50_95": 0.302,
+    "inference_ms": 9.7
+  },
+  "live_per_class": {
+    "pothole": {
+      "objects": 299,
+      "precision": 0.601,
+      "recall": 0.254,
+      "f1": 0.357,
+      "map50": 0.312,
+      "map50_95": 0.108
+    },
+    "cone": {
+      "objects": 2358,
+      "precision": 0.712,
+      "recall": 0.715,
+      "f1": 0.714,
+      "map50": 0.694,
+      "map50_95": 0.416
+    },
+    "barrier": {
+      "objects": 1977,
+      "precision": 0.692,
+      "recall": 0.539,
+      "f1": 0.606,
+      "map50": 0.578,
+      "map50_95": 0.317
+    },
+    "roadwork_sign": {
+      "objects": 471,
+      "precision": 0.638,
+      "recall": 0.495,
+      "f1": 0.557,
+      "map50": 0.52,
+      "map50_95": 0.367
+    }
+  },
+  "class_agnostic": {
+    "live": {
+      "precision": 0.726,
+      "recall": 0.597,
+      "f1": 0.655,
+      "map50": 0.63,
+      "map50_95": 0.364,
+      "inference_ms": 9.7
+    },
+    "best": {
+      "precision": 0.711,
+      "recall": 0.646,
+      "f1": 0.677,
+      "map50": 0.677,
+      "map50_95": 0.412,
+      "inference_ms": 50.2
+    }
+  },
+  "operating_points_best": [
+    {
+      "conf": 0.25,
+      "precision": 0.5203131170289733,
+      "recall": 0.6119611970464809
+    },
+    {
+      "conf": 0.4,
+      "precision": 0.6734179786474447,
+      "recall": 0.5338417306489999
+    },
+    {
+      "conf": 0.5,
+      "precision": 0.7633975326734858,
+      "recall": 0.4739145036999113
+    },
+    {
+      "conf": 0.6,
+      "precision": 0.8686247487585745,
+      "recall": 0.39606715858772323
+    },
+    {
+      "conf": 0.7,
+      "precision": 0.9160875569951434,
+      "recall": 0.29984554136530317
+    }
+  ],
+  "operating_points_best_agnostic": [
+    {
+      "conf": 0.25,
+      "precision": 0.5633249902893407,
+      "recall": 0.7196865817825661
+    },
+    {
+      "conf": 0.4,
+      "precision": 0.7070145239275293,
+      "recall": 0.6468168462291871
+    },
+    {
+      "conf": 0.5,
+      "precision": 0.7810360868073163,
+      "recall": 0.5792383917370953
+    },
+    {
+      "conf": 0.6,
+      "precision": 0.85333040946291,
+      "recall": 0.4946193790032457
+    },
+    {
+      "conf": 0.7,
+      "precision": 0.8932188704171357,
+      "recall": 0.37031908834149163
+    }
+  ]
+}

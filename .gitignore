@@ -1,0 +1,30 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+data/
+models/*.pt
+models/*.tflite
+demo/_test/
+
+# Trained ONNX models in models/ ARE committed (the app needs them); training weights are not.
+# Pretrained / third-party weights: re-downloaded automatically by Ultralytics
+/*.pt
+/*.ts
+/*.onnx
+training/*.pt
+# Duplicate archive of screenshots/
+screenshots.rar
+# LaTeX build files (rapport/main.pdf is kept)
+rapport/*.aux
+rapport/*.bbl
+rapport/*.bcf
+rapport/*.blg
+rapport/*.fdb_latexmk
+rapport/*.fls
+rapport/*.lof
+rapport/*.log
+rapport/*.lot
+rapport/*.run.xml
+rapport/*.toc
+rapport/*.out

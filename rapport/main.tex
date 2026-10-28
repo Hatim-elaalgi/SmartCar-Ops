@@ -1,0 +1,149 @@
+% =====================================================================================
+%  Rapport de projet — Module : Internet des objets — FST Béni Mellal — 2025/2026
+%  Compilation (Docker) :  voir README.md  (latexmk -pdf main.tex)
+% =====================================================================================
+\documentclass[12pt,a4paper,openany]{report}
+
+% --- Langue, police, mise en page ----------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}                      % avant newtxmath, qui fournit aussi les symboles AMS
+\usepackage{newtxtext,newtxmath}          % Times, comme la page de garde
+\usepackage{icomma}                       % virgule décimale en mode mathématique
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm,headheight=15pt,headsep=0.6cm,footskip=0.9cm]{geometry}
+\usepackage{setspace}
+\setstretch{1.2}
+\usepackage{microtype}
+
+% --- Figures, tableaux, couleurs -----------------------------------------------------
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{font=small,labelfont=bf,labelsep=period,justification=centering}
+\usepackage{xcolor}
+\usepackage{booktabs,tabularx,array,multirow,longtable,makecell}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,shapes.misc,shapes.multipart,fit,backgrounds,calc,
+                shadows,decorations.pathreplacing,matrix}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\floatname{algorithm}{Algorithme}
+\algrenewcommand\algorithmicloop{\textbf{répéter}}
+\algrenewcommand\algorithmicif{\textbf{si}}
+\algrenewcommand\algorithmicthen{\textbf{alors}}
+\algrenewcommand\algorithmicelse{\textbf{sinon}}
+\algrenewcommand\algorithmicend{\textbf{fin}}
+\renewcommand{\listalgorithmname}{Liste des algorithmes}
+
+\definecolor{bleufst}{HTML}{1B8CC6}
+\definecolor{orangefst}{HTML}{F5A623}
+\definecolor{vertfst}{HTML}{8DC63F}
+\definecolor{encre}{HTML}{1F2933}
+\definecolor{gris}{HTML}{6B7280}
+\definecolor{fond}{HTML}{F3F6F9}
+\definecolor{critique}{HTML}{D03B3B}
+\definecolor{eleve}{HTML}{EC835A}
+\definecolor{moyen}{HTML}{FAB219}
+\definecolor{faible}{HTML}{0CA30C}
+
+\lstset{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{fond},frame=single,rulecolor=\color{gris!40},
+        breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,
+        keywordstyle=\color{bleufst}\bfseries,commentstyle=\color{gris}\itshape,literate={é}{{\'e}}1 {è}{{\`e}}1
+        {à}{{\`a}}1 {ç}{{\c{c}}}1 {ê}{{\^e}}1 {→}{{$\rightarrow$}}1 {×}{{$\times$}}1}
+
+% --- Titres de chapitres, en-têtes ---------------------------------------------------
+\usepackage{titlesec}
+% « Chapitre 1 : Titre » sur une seule ligne, entièrement en bleu
+\titleformat{\chapter}[hang]{\normalfont\LARGE\bfseries\color{bleufst}}
+  {\chaptertitlename\ \thechapter\ :}{0.4em}{}[{\color{orangefst}\titlerule[1.5pt]}]
+\titleformat{name=\chapter,numberless}[hang]{\normalfont\LARGE\bfseries\color{encre}}
+  {}{0pt}{}[{\color{orangefst}\titlerule[1.5pt]}]
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+\titleformat{\section}{\normalfont\Large\bfseries\color{bleufst}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{encre}}{\thesubsection}{0.8em}{}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter\ : #1}{}}
+\fancyhead[L]{\small\color{gris}\nouppercase{\leftmark}}
+\fancyhead[R]{\small\color{gris}SmartCar Ops}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+\usepackage{tocloft}
+\setlength{\cftfignumwidth}{3em}
+% Titres des listes (tables des matières, des figures, des tableaux, abréviations) : centrés, même style, sans filet
+\newcommand{\stylelistes}{\normalfont\Huge\bfseries\color{encre}}
+\renewcommand{\cfttoctitlefont}{\hfill\stylelistes}\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftloftitlefont}{\hfill\stylelistes}\renewcommand{\cftafterloftitle}{\hfill}
+\renewcommand{\cftlottitlefont}{\hfill\stylelistes}\renewcommand{\cftafterlottitle}{\hfill}
+\newcommand{\titreliste}[1]{%
+  \clearpage\thispagestyle{plain}%
+  \vspace*{\cftbeforetoctitleskip}%        % mêmes espacements que les titres de tocloft
+  {\centering{\stylelistes #1}\par\nobreak\vskip\cftaftertoctitleskip}\phantomsection
+  \markboth{#1}{}\addcontentsline{toc}{chapter}{#1}}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
+\addbibresource{biblio.bib}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{bookmark}
+
+% --- Raccourcis ----------------------------------------------------------------------
+\newcommand{\titreprojet}{SmartCar Ops : système IoT de détection et de priorisation des obstacles routiers
+  par vision artificielle, du prototype au monde réel}
+\newcommand{\app}{\textit{SmartCar Ops}}
+\newcommand{\capture}[3][0.95]{%  \capture[largeur]{fichier}{légende}
+  \begin{figure}[H]\centering\includegraphics[width=#1\linewidth]{captures/#2}\caption{#3}\label{fig:#2}\end{figure}}
+\newcommand{\chapintro}{\section*{Introduction du chapitre}\addcontentsline{toc}{section}{Introduction du chapitre}}
+\newcommand{\chapconclusion}{\section*{Conclusion du chapitre}\addcontentsline{toc}{section}{Conclusion du chapitre}}
+% Boîtes de diagrammes TikZ
+\tikzset{
+  every node/.append style={execute at begin node=\setstretch{1}},
+  bloc/.style={draw=bleufst,very thick,rounded corners=3pt,fill=white,align=center,font=\small,
+               minimum height=0.9cm,inner sep=4pt},
+  blocg/.style={bloc,fill=bleufst!10},
+  bloco/.style={bloc,draw=orangefst,fill=orangefst!12},
+  blocv/.style={bloc,draw=vertfst!80!black,fill=vertfst!15},
+  zone/.style={draw=gris!60,dashed,rounded corners=6pt,inner sep=8pt},
+  fleche/.style={-{Stealth[length=2.6mm]},thick,draw=encre},
+  note/.style={font=\scriptsize\itshape,text=gris},
+}
+
+\begin{document}
+
+% --- Pages liminaires ----------------------------------------------------------------
+\pagenumbering{gobble}
+\input{chapitres/garde}
+\pagenumbering{roman}
+\input{chapitres/resume}
+\clearpage\tableofcontents
+\clearpage\listoffigures
+\clearpage\listoftables
+\clearpage\input{chapitres/abreviations}
+
+% --- Corps -----------------------------------------------------------------------------
+\cleardoublepage
+\pagenumbering{arabic}
+\input{chapitres/introduction}
+\input{chapitres/chap1}
+\input{chapitres/chap2}
+\input{chapitres/chap3}
+\input{chapitres/chap4}
+\input{chapitres/conclusion}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliographie}
+\printbibliography[title={Bibliographie}]
+
+\end{document}

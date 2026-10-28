@@ -1,0 +1,30 @@
+{
+  "name": "Our tape loop (from the top-view photo, size estimated)",
+  "units": "cm",
+  "nodes": [
+    {"id": "A", "x": 50,  "y": 0,   "marker": 0, "label": "A - Start (bottom)"},
+    {"id": "B", "x": 100, "y": 40,  "marker": 1, "label": "B - Right, lower"},
+    {"id": "C", "x": 100, "y": 115, "marker": 2, "label": "C - Right, upper"},
+    {"id": "D", "x": 50,  "y": 150, "marker": 3, "label": "D - Top"},
+    {"id": "E", "x": 0,   "y": 110, "marker": 4, "label": "E - Left, upper"},
+    {"id": "F", "x": 0,   "y": 40,  "marker": 5, "label": "F - Left, lower"}
+  ],
+  "edges": [
+    {"u": "A", "v": "B", "via": [[78, 0], [92, 4], [99, 14]]},
+    {"u": "B", "v": "C"},
+    {"u": "C", "v": "D", "via": [[99, 136], [92, 146], [78, 150]]},
+    {"u": "D", "v": "E", "via": [[22, 150], [8, 146], [1, 136]]},
+    {"u": "E", "v": "F"},
+    {"u": "F", "v": "A", "via": [[1, 14], [8, 4], [22, 0]]}
+  ],
+  "trajectories": [
+    {"name": "Full loop", "nodes": ["A", "F", "E", "D", "C", "B", "A"]},
+    {"name": "Reverse loop", "nodes": ["A", "B", "C", "D", "E", "F", "A"]},
+    {"name": "Start to top (right side)", "nodes": ["A", "B", "C", "D"]},
+    {"name": "Start to top (left side)", "nodes": ["A", "F", "E", "D"]}
+  ],
+  "obstacles": [
+    {"cls": "box", "x": 0,   "y": 75, "label": "Box — middle of the left side"},
+    {"cls": "box", "x": 100, "y": 75, "label": "Box — middle of the right side"}
+  ]
+}

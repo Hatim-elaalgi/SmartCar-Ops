@@ -1,0 +1,46 @@
+% Architecture logicielle de SmartCar Ops (chapitre 4)
+\begin{tikzpicture}[
+  m/.style={bloc,font=\footnotesize,minimum height=1.05cm,text width=#1,minimum width=#1},
+  m/.default=3.3cm,
+  titre/.style={font=\footnotesize\bfseries,text=#1,anchor=south west,inner sep=1pt}]
+  % navigateur
+  \node[bloc,draw=gris,fill=gris!8,minimum width=15cm,font=\small] (nav) at (7.5,0.6)
+       {Navigateur de l'opérateur — interface Dash (React), rafraîchie par \texttt{dcc.Interval} (1 s et 5 s)};
+  % présentation
+  \node[m=3.3cm,fill=bleufst!8] (appf) at (2.0,-1.5) {\texttt{app.py}\\structure, menu, commutateur};
+  \node[m=3.3cm,fill=bleufst!8] (pages) at (5.7,-1.5) {\texttt{pages/}\\8 pages et leurs callbacks};
+  \node[m=3.3cm,fill=bleufst!8] (comp) at (9.4,-1.5) {\texttt{components/}\\thème, panneaux, figures};
+  \node[m=3.3cm,fill=bleufst!8] (flask) at (13.1,-1.5) {Serveur Flask\\relais vidéo, instantanés};
+  % métier
+  \node[m=2.6cm,fill=vertfst!12,draw=vertfst!80!black] (hub) at (1.65,-3.6) {\texttt{hub}\\télémétrie en mémoire};
+  \node[m=2.6cm,fill=vertfst!12,draw=vertfst!80!black] (obs) at (4.55,-3.6) {\texttt{obstacles}\\\texttt{severity}};
+  \node[m=2.6cm,fill=vertfst!12,draw=vertfst!80!black] (plan) at (7.45,-3.6) {\texttt{planner}, \texttt{network}\\(NetworkX)};
+  \node[m=2.6cm,fill=vertfst!12,draw=vertfst!80!black] (trips) at (10.35,-3.6) {\texttt{trips}, \texttt{events}\\\texttt{metrics}};
+  \node[m=2.6cm,fill=vertfst!12,draw=vertfst!80!black] (set) at (13.25,-3.6) {\texttt{settings}\\\texttt{db} (SQLite)};
+  % services
+  \node[m=2.6cm,fill=orangefst!12,draw=orangefst] (cam) at (1.65,-5.7) {\texttt{camera}\\découverte, relais};
+  \node[m=2.6cm,fill=orangefst!12,draw=orangefst] (perc) at (4.55,-5.7) {\texttt{perception}\\ArUco, mouvement};
+  \node[m=2.6cm,fill=orangefst!12,draw=orangefst] (dash) at (7.45,-5.7) {\texttt{dashcam}\\distance, réaction};
+  \node[m=2.6cm,fill=orangefst!12,draw=orangefst] (det) at (10.35,-5.7) {\texttt{detector}\\\texttt{onnx\_yolo}};
+  \node[m=2.6cm,fill=orangefst!12,draw=orangefst] (sim) at (13.25,-5.7) {\texttt{sim\_real}\\\texttt{sim\_proto}};
+  % données
+  \node[m=3.3cm,fill=gris!10,draw=gris] (sqlite) at (2.0,-7.8) {Volume \texttt{/data}\\SQLite, instantanés};
+  \node[m=3.3cm,fill=gris!10,draw=gris] (models) at (5.7,-7.8) {\texttt{models/}\\ONNX, profils, registre};
+  \node[m=3.3cm,fill=gris!10,draw=gris] (res) at (9.4,-7.8) {\texttt{resources/}\\graphe OSM, piste};
+  \node[m=3.3cm,fill=gris!10,draw=gris] (vid) at (13.1,-7.8) {\texttt{demo/videos}\\+ flux ESP32-CAM};
+  % couches
+  \begin{scope}[on background layer]
+    \node[zone,fill=bleufst!4,fit=(appf)(flask)] (z1) {};
+    \node[zone,fill=vertfst!5,fit=(hub)(set)] (z2) {};
+    \node[zone,fill=orangefst!5,fit=(cam)(sim)] (z3) {};
+    \node[zone,fill=gris!5,fit=(sqlite)(vid)] (z4) {};
+    \node[draw=encre,thick,rounded corners=8pt,inner sep=8pt,fit=(z1)(z4),
+          label={[font=\small\bfseries,anchor=north east]south east:Conteneur Docker \texttt{iot-smartcar-dashboard}}] {};
+  \end{scope}
+  \node[titre=bleufst] at (z1.north west) {Présentation};
+  \node[titre=vertfst!60!black] at (z2.north west) {Métier (\texttt{core/})};
+  \node[titre=orangefst!80!black] at (z3.north west) {Services d'arrière-plan (\texttt{sources/})};
+  \node[titre=gris] at (z4.north west) {Données};
+  \draw[fleche,{Stealth[length=2.6mm]}-{Stealth[length=2.6mm]}] (pages.north |- nav.south) -- (pages.north);
+  \draw[fleche] (flask.north) -- (flask.north |- nav.south);
+\end{tikzpicture}

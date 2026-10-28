@@ -1,0 +1,207 @@
+{
+  "_help": "One entry per trained model. Replace the example numbers with your own evaluation results, then set \"example\": false. mode = real | proto. Confusion matrix rows = true class, columns = predicted class (counts).",
+  "models": [
+    {
+      "id": "road-users",
+      "mode": "real",
+      "name": "Road users detector",
+      "framework": "YOLO26N COCO-pretrained (Ultralytics)",
+      "version": "COCO",
+      "trained": "pretrained",
+      "input": "640 × 640",
+      "dataset": {
+        "images": 118287,
+        "split": "COCO train2017 / val2017",
+        "sources": [
+          "COCO 2017 (Lin et al., ECCV 2014) — CC BY 4.0 annotations"
+        ]
+      },
+      "example": false,
+      "metrics_source": "not re-evaluated here — see Ultralytics' published COCO val2017 results",
+      "metrics": {},
+      "per_class": {},
+      "classes_used": [
+        "animal",
+        "cyclist",
+        "pedestrian",
+        "vehicle"
+      ]
+    },
+    {
+      "id": "road-hazards",
+      "mode": "real",
+      "name": "Road hazards detector",
+      "framework": "YOLO26S fine-tuned (Ultralytics 8.4.184)",
+      "version": "1.0",
+      "trained": "2026-10-23",
+      "input": "640 × 640",
+      "dataset": {
+        "images": 7894,
+        "split": "6324 / 755 / 815",
+        "sources": [
+          "Potholes under challenging conditions (Bučko et al., Sensors 2022) — CC BY 4.0",
+          "ROADWork (Ghosh et al., ICCV 2025, CMU) — ODC-By 1.0"
+        ]
+      },
+      "example": false,
+      "metrics_source": "held-out test split (this notebook)",
+      "metrics": {
+        "precision": 0.661,
+        "recall": 0.501,
+        "map50": 0.526,
+        "map50_95": 0.302,
+        "f1": 0.57,
+        "inference_ms": 10.1
+      },
+      "per_class": {
+        "pothole": 0.312,
+        "cone": 0.694,
+        "barrier": 0.578,
+        "roadwork_sign": 0.52
+      },
+      "confusion": {
+        "labels": [
+          "pothole",
+          "cone",
+          "barrier",
+          "roadwork_sign",
+          "background"
+        ],
+        "matrix": [
+          [
+            59,
+            0,
+            0,
+            0,
+            240
+          ],
+          [
+            0,
+            1626,
+            15,
+            0,
+            717
+          ],
+          [
+            0,
+            15,
+            994,
+            3,
+            965
+          ],
+          [
+            0,
+            5,
+            14,
+            225,
+            227
+          ],
+          [
+            19,
+            463,
+            264,
+            85,
+            0
+          ]
+        ],
+        "conf": 0.35,
+        "imgsz": 640
+      },
+      "training": {
+        "epochs": 36,
+        "minutes": 481.7,
+        "gpu": "NVIDIA GeForce GTX 1650 Ti"
+      },
+      "metrics_best": {
+        "precision": 0.656,
+        "recall": 0.548,
+        "f1": 0.597,
+        "map50": 0.574,
+        "map50_95": 0.346,
+        "inference_ms": 50.5,
+        "setting": "960 px + TTA"
+      },
+      "per_class_best": {
+        "pothole": 0.33,
+        "cone": 0.744,
+        "barrier": 0.634,
+        "roadwork_sign": 0.588
+      }
+    },
+    {
+      "id": "toy-obstacles",
+      "mode": "proto",
+      "name": "Toy track obstacle detector",
+      "framework": "YOLO26N fine-tuned (Ultralytics 8.4.184)",
+      "version": "1.0",
+      "trained": "2026-10-23",
+      "input": "320 × 320",
+      "dataset": {
+        "images": 247,
+        "split": "169 / 26 / 26 real frames",
+        "sources": [
+          "Our toy-track video (249 frames), labels from SAM 2 video tracking, checked visually",
+          "+ 96 ESP32-CAM-look copies and 400 copy-paste images (training only)"
+        ]
+      },
+      "example": false,
+      "metrics_source": "held-out test frames (time-block split of the same drive)",
+      "metrics": {
+        "precision": 0.989,
+        "recall": 1.0,
+        "map50": 0.995,
+        "map50_95": 0.976,
+        "f1": 0.994,
+        "inference_ms": 21.5
+      },
+      "per_class": {
+        "column": 0.995,
+        "box": 0.995
+      },
+      "confusion": {
+        "labels": [
+          "column",
+          "box",
+          "background"
+        ],
+        "matrix": [
+          [
+            6,
+            0,
+            0
+          ],
+          [
+            0,
+            9,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "conf": 0.4,
+        "imgsz": 320
+      },
+      "metrics_variants": [
+        {
+          "label": "Same test frames as 320 × 240 ESP32-CAM-style images",
+          "metrics": {
+            "precision": 0.991,
+            "recall": 1.0,
+            "map50": 0.995,
+            "map50_95": 0.921,
+            "f1": 0.995,
+            "inference_ms": 29.9
+          }
+        }
+      ],
+      "training": {
+        "epochs": 73,
+        "minutes": 30.1,
+        "gpu": "NVIDIA GeForce GTX 1650 Ti"
+      }
+    }
+  ]
+}

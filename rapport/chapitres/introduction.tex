@@ -1,0 +1,39 @@
+\chapter*{Introduction générale}
+\addcontentsline{toc}{chapter}{Introduction générale}
+\markboth{Introduction générale}{}
+
+Les véhicules connectés et autonomes reposent sur une idée simple : un véhicule qui perçoit son environnement,
+qui communique ce qu'il perçoit et qui en tire des décisions est plus sûr et plus efficace. Cette idée se trouve
+au croisement de deux domaines qui progressent rapidement : l'Internet des objets (IoT), qui relie des capteurs et
+des actionneurs à des services distants, et l'intelligence artificielle, et plus particulièrement la vision par
+ordinateur, qui permet d'interpréter automatiquement des images.
+
+Sur la route, les obstacles ne sont pas seulement les autres usagers. Les nids-de-poule, les cônes, les barrières
+et les zones de travaux sont à l'origine de dégâts matériels et d'accidents, et leur signalement reste souvent
+manuel et tardif. Un système capable de les détecter automatiquement à partir d'une caméra embarquée, de les
+localiser, d'en évaluer la gravité et de les partager avec les autres véhicules apporterait une aide directe à la
+conduite et à la maintenance du réseau routier.
+
+C'est dans ce contexte que s'inscrit notre projet, réalisé dans le cadre du module \emph{Internet des objets} à la
+Faculté des Sciences et Techniques de Béni Mellal. Nous avons conçu une chaîne complète, du capteur jusqu'à
+l'interface de supervision :
+\begin{itemize}
+  \item un \textbf{prototype} de voiture miniature qui suit une piste et réagit aux obstacles, équipé d'une
+        caméra Wi-Fi ESP32-CAM ;
+  \item des \textbf{modèles de détection d'objets} YOLO26, entraînés d'une part sur des données routières réelles
+        et d'autre part sur des images de notre propre piste ;
+  \item une \textbf{application web}, \app, qui exécute ces modèles en temps réel, estime la gravité des
+        obstacles, les priorise, les place sur une carte et propose des itinéraires qui les évitent.
+\end{itemize}
+
+L'application gère deux environnements. L'environnement \emph{monde réel} simule une petite flotte de véhicules
+sur le réseau routier réel d'un quartier de Paris ; la caméra du véhicule CAR-01 y est remplacée par de vraies
+vidéos de route analysées par nos modèles. L'environnement \emph{prototype} correspond à la voiture miniature et
+à sa piste. Ce double environnement permet de valider la même chaîne logicielle à deux échelles.
+
+Ce rapport est organisé en quatre chapitres. Le \textbf{premier chapitre} présente le contexte général, l'IoT et
+son association avec l'intelligence artificielle, la problématique, les objectifs, le cahier des charges et
+l'architecture générale du système. Le \textbf{deuxième chapitre} décrit la conception et la réalisation
+matérielle du prototype. Le \textbf{troisième chapitre} est consacré aux modèles d'intelligence artificielle :
+données, entraînement, évaluation et intégration. Le \textbf{quatrième chapitre} présente l'application
+\app{} page par page. Nous terminons par une conclusion générale et des perspectives.

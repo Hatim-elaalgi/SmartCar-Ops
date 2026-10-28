@@ -1,0 +1,38 @@
+{
+  "name": "Real road obstacles (2 models)",
+  "models": [
+    {
+      "id": "road-users",
+      "path": "models/road_users.onnx",
+      "imgsz": 640,
+      "conf": 0.4,
+      "classes": {
+        "person": "pedestrian",
+        "bicycle": "cyclist",
+        "motorcycle": "vehicle",
+        "car": "vehicle",
+        "bus": "vehicle",
+        "truck": "vehicle",
+        "train": "vehicle",
+        "dog": "animal",
+        "cat": "animal",
+        "horse": "animal",
+        "cow": "animal",
+        "sheep": "animal",
+        "bird": "animal"
+      }
+    },
+    {
+      "id": "road-hazards",
+      "path": "models/road_hazards.onnx",
+      "imgsz": 640,
+      "conf": 0.35,
+      "classes": {
+        "pothole": "pothole",
+        "cone": "cone",
+        "barrier": "barrier",
+        "roadwork_sign": "roadwork"
+      }
+    }
+  ]
+}

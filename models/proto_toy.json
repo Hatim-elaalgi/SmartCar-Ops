@@ -1,0 +1,15 @@
+{
+  "name": "Toy track obstacles",
+  "models": [
+    {
+      "id": "toy-obstacles",
+      "path": "models/toy_obstacles.onnx",
+      "imgsz": 320,
+      "conf": 0.4,
+      "classes": {
+        "column": "column",
+        "box": "box"
+      }
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+% Architecture globale du système (figure du chapitre 1)
+\begin{tikzpicture}[
+  b/.style={bloc,font=\footnotesize,minimum width=3cm,text width=2.8cm,minimum height=1cm},
+  bo/.style={b,draw=orangefst,fill=orangefst!12},
+  bv/.style={b,draw=vertfst!80!black,fill=vertfst!15},
+  bg/.style={b,fill=bleufst!10}]
+  % ---- perception : prototype
+  \node[bo] (sens) at (1.7,-0.75) {Capteurs IR\\+ HC-SR04};
+  \node[bo] (uno)  at (1.7,-2.15) {Arduino UNO\\(commande)};
+  \node[bo] (mot)  at (1.7,-3.55) {L298N\\+ 2 moteurs DC};
+  \node[bo] (cam)  at (5.1,-2.15) {ESP32-CAM\\(OV3660)};
+  \draw[fleche] (sens) -- (uno); \draw[fleche] (uno) -- (mot);
+  \begin{scope}[on background layer]
+    \node[zone,fill=orangefst!5,fit=(sens)(mot)(cam),
+          label={[font=\bfseries\small]above:Prototype — perception}] (zp) {};
+  \end{scope}
+  % ---- perception : monde réel
+  \node[bv] (vid) at (8.5,-2.15)  {Vidéos de route\\(dashcam de CAR-01)};
+  \node[bv] (sim) at (12.0,-2.15) {Simulateur de flotte\\(3 véhicules)};
+  \node[bv] (osm) at (15.5,-2.15) {Graphe routier OSM\\(Quartier Latin)};
+  \begin{scope}[on background layer]
+    \node[zone,fill=vertfst!6,fit=(vid)(osm)(vid|-sens.north)(vid|-mot.south),
+          label={[font=\bfseries\small]above:Monde réel — perception}] (zr) {};
+  \end{scope}
+  % ---- réseau
+  \node[b,draw=orangefst,fill=white] (wifi) at (5.1,-5.0) {Wi-Fi 802.11\\HTTP : flux MJPEG};
+  \draw[fleche] (cam) -- (wifi);
+  % ---- traitement (serveur)
+  \node[bg] (relay) at (1.7,-7.2)  {Découverte IP\\+ relais MJPEG};
+  \node[bg] (perc)  at (5.1,-7.2)  {Perception : rotation,\\ArUco, mouvement};
+  \node[bg] (onnx)  at (8.5,-7.2)  {Inférence YOLO26\\(ONNX Runtime)};
+  \node[bg] (sev)   at (13.2,-7.2) {Distance, gravité,\\priorité, fusion};
+  \node[bg] (db)    at (5.1,-8.9)  {SQLite (WAL)\\+ instantanés};
+  \node[bg] (hub)   at (8.5,-8.9)  {Télémétrie en direct\\(hub mémoire)};
+  \node[bg] (plan)  at (13.2,-8.9) {Risque des segments\\+ planificateur};
+  \draw[fleche] (wifi.south) -- ++(0,-0.55) -| (relay.north);
+  \draw[fleche] (relay) -- (perc); \draw[fleche] (perc) -- (onnx); \draw[fleche] (onnx) -- (sev);
+  \draw[fleche] (sev) -- (plan); \draw[fleche] (perc) -- (db);
+  \draw[fleche] (perc.south east) -- (hub.north west);
+  \draw[fleche] (vid) -- (onnx);
+  \draw[fleche] ([xshift=-1.0cm]sim.south) -- ++(0,-5.3) -| ([xshift=0.6cm]hub.north);
+  \draw[fleche] (osm.south) |- (plan.east);
+  \begin{scope}[on background layer]
+    \node[zone,fill=bleufst!5,fit=(relay)(sev)(plan)(db)(osm.east|-plan.south),
+          label={[font=\bfseries\small,anchor=south east]north east:Serveur — conteneur Docker (traitement)}] (zs) {};
+  \end{scope}
+  % ---- application
+  \node[b,minimum width=6.4cm,text width=6.2cm] (dash) at (8.5,-11.2) {\textbf{Application Dash \app}\\8 pages, rafraîchies chaque seconde};
+  \node[b] (nav) at (13.7,-11.2) {Navigateur\\de l'opérateur};
+  \node[b,draw=gris,fill=gris!10] (train) at (2.3,-11.2) {Entraînement (GPU)\\JupyterLab + Ultralytics};
+  \draw[fleche] (zs.south -| dash.north) -- (dash);
+  \draw[fleche,{Stealth[length=2.6mm]}-{Stealth[length=2.6mm]}] (dash) -- (nav);
+  \draw[fleche,dashed,draw=gris] (train.north) -- (train.north |- zs.south) node[note,midway,right] {modèles ONNX};
+\end{tikzpicture}

@@ -1,0 +1,28 @@
+\chapter*{Conclusion et perspectives}
+\addcontentsline{toc}{chapter}{Conclusion et perspectives}
+\markboth{Conclusion et perspectives}{}
+
+Ce projet avait pour objectif de concevoir, avec des composants à faible coût, un système IoT capable de détecter les
+obstacles sur le trajet d'un véhicule, d'en évaluer la gravité et d'exploiter ces informations en temps réel ; au terme
+de ce travail, une chaîne complète a été réalisée, du capteur jusqu'à la décision. Sur le plan matériel, nous avons
+construit une voiture miniature autour d'une carte Arduino UNO, d'un pont en H L298N, de deux moteurs à courant
+continu, de deux capteurs infrarouges et d'un capteur ultrasonique, qui suit de façon autonome une piste tracée au
+ruban adhésif et s'arrête devant un obstacle, tandis qu'une caméra ESP32-CAM diffuse en Wi-Fi les images prises de son
+point de vue. Sur le plan de l'intelligence artificielle, nous avons entraîné des détecteurs YOLO26 dans un
+environnement Docker reproductible : le détecteur d'anomalies routières, affiné pendant huit heures sur 7\,894 images
+réelles, atteint un mAP@50 de 0,53 en temps réel (0,57 au meilleur réglage) sur des lieux absents de l'entraînement,
+et le modèle du prototype, entraîné sur notre propre jeu de données annoté automatiquement avec SAM~2, reconnaît tous
+les obstacles de son ensemble de test et détecte la boîte sur le flux réel de la caméra avec une confiance de
+95\,\%. Sur le plan logiciel, l'application \app, développée avec Dash et Plotly, exécute ces modèles en temps réel,
+transforme leurs détections en obstacles localisés et priorisés selon un score explicable, les intègre à la
+planification des itinéraires et permet de superviser avec la même chaîne logicielle une flotte sur le réseau routier
+réel d'un quartier de Paris et la voiture du prototype. Ce projet nous a permis de mettre en pratique l'ensemble des
+notions du module (capteurs et actionneurs, microcontrôleurs, communication sans fil, traitement des données,
+intelligence artificielle et supervision) et d'apprendre à évaluer honnêtement un modèle en identifiant ses limites.
+Plusieurs perspectives permettraient de prolonger ce travail : enrichir les données du prototype avec des images
+enregistrées par l'ESP32-CAM elle-même, dans différents lieux et éclairages, pour supprimer les fausses détections sur
+des objets inconnus ; améliorer le modèle routier par un entraînement plus long et davantage d'exemples de
+nids-de-poule ; relier l'Arduino au système pour transmettre la distance ultrasonique et recevoir des consignes du
+serveur ; localiser précisément la voiture grâce aux marqueurs ArUco sur la piste et, dans le monde réel, à un module
+GPS ; exécuter les modèles sur un calculateur embarqué (Raspberry Pi, Jetson) pour réduire la latence ; et enfin
+déployer l'application sur un serveur accessible à distance, avec des notifications en cas d'obstacle critique.

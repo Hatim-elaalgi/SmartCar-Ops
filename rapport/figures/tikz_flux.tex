@@ -1,0 +1,42 @@
+% Flux de données entre les composants (chapitre 4)
+\begin{tikzpicture}[
+  s/.style={bloc,font=\footnotesize,minimum width=3.0cm,text width=2.8cm,minimum height=1.05cm},
+  lb/.style={font=\scriptsize\itshape,text=gris,fill=white,inner sep=1pt},
+  col/.style={font=\footnotesize\bfseries,text=gris}]
+  % titres de colonnes
+  \node[col] at (0,1.15) {Sources}; \node[col] at (4.2,1.15) {Services d'arrière-plan};
+  \node[col] at (8.2,1.15) {Modèles}; \node[col] at (12.6,1.15) {Stockage};
+  % sources
+  \node[s,fill=orangefst!12,draw=orangefst] (esp) at (0,0) {ESP32-CAM\\flux vidéo Wi-Fi};
+  \node[s,fill=vertfst!12,draw=vertfst!80!black] (vid) at (0,-1.9) {Vidéos de route\\(dashcam CAR-01)};
+  \node[s,fill=gris!8,draw=gris] (sims) at (0,-3.8) {Simulateurs\\(flotte, démo prototype)};
+  % services
+  \node[s,fill=bleufst!10] (camsvc) at (4.2,0) {Service caméra\\rotation, ArUco, mouvement};
+  \node[s,fill=bleufst!10] (dcs) at (4.2,-1.9) {Service dashcam\\distance, voie, réaction};
+  % modèles
+  \node[s,fill=bleufst!18] (onnx) at (8.2,-0.95) {Détecteurs YOLO26\\(ONNX Runtime)};
+  % stockage
+  \node[s,fill=gris!10,draw=gris] (hub) at (12.6,0) {Hub en mémoire\\télémétrie, détections};
+  \node[s,fill=gris!10,draw=gris] (db) at (12.6,-1.9) {SQLite : obstacles, trajets, événements};
+  \node[s,fill=gris!10,draw=gris] (snap) at (12.6,-3.8) {Instantanés JPEG\\(volume \texttt{/data})};
+  % consommateurs
+  \node[bloc,font=\footnotesize,minimum width=15.6cm,fill=fond] (ui) at (6.3,-5.9)
+       {Callbacks Dash (1 s / 5 s) $\rightarrow$ 8 pages \quad | \quad relais MJPEG annoté $\rightarrow$ page Camera
+        \quad | \quad planificateur : risque des segments};
+  % flux
+  \draw[fleche] (esp) -- node[lb,above] {JPEG} (camsvc);
+  \draw[fleche] (vid) -- node[lb,above] {images} (dcs);
+  \draw[fleche,{Stealth[length=2.4mm]}-{Stealth[length=2.4mm]}] (camsvc.south east) -- node[lb,above,sloped,pos=0.45] {image / boîtes} (onnx.north west);
+  \draw[fleche,{Stealth[length=2.4mm]}-{Stealth[length=2.4mm]}] (dcs.north east) -- node[lb,below,sloped,pos=0.45] {image / boîtes} (onnx.south west);
+  % bus vers le stockage
+  \coordinate (bus) at (10.45,0);
+  \draw[very thick,draw=encre] (10.45,0) -- (10.45,-3.8);
+  \draw[thick,draw=encre] (camsvc.east) -- node[lb,above,pos=0.55] {position, état, détections} (10.45,0);
+  \draw[thick,draw=encre] (dcs.east) -- node[lb,below,pos=0.55] {obstacles, réactions} (10.45,-1.9);
+  \draw[thick,draw=encre] (sims.east) -- node[lb,above,pos=0.6] {télémétrie, obstacles simulés} (10.45,-3.8);
+  \foreach \n in {hub,db,snap} \draw[fleche] (bus |- \n.west) -- (\n.west);
+  % vers l'interface
+  \draw[fleche] (hub.east) -- ++(0.35,0) |- ([yshift=0.15cm]ui.east);
+  \draw[thick,draw=encre] (db.east) -- ++(0.35,0);
+  \draw[fleche] (snap.south) -- (snap.south |- ui.north);
+\end{tikzpicture}

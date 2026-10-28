@@ -1,0 +1,52 @@
+services:
+  dashboard:
+    build:
+      context: .
+      args:
+        WITH_YOLO: "${WITH_YOLO:-0}"
+    image: iot-smartcar-dashboard
+    container_name: iot-smartcar-dashboard
+    ports:
+      - "${PORT:-8050}:8050"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATA_DIR: /data
+    volumes:
+      # Code is mounted so a `docker compose restart` picks up your edits (DEBUG=1 reloads automatically).
+      - ./:/app
+      # Database, snapshots, track layout and settings live in a Docker volume
+      # (SQLite is not reliable on Windows bind mounts).
+      - iotdash-data:/data
+    restart: unless-stopped
+
+  # Optional fake ESP32-CAM for demos without the hardware:
+  #   set CAMERA_IP=fakecam in .env, then:  docker compose --profile fakecam up
+  fakecam:
+    image: iot-smartcar-dashboard
+    profiles: ["fakecam"]
+    command: ["python", "-m", "tests.fake_esp32cam"]
+    environment:
+      DATA_DIR: /data
+    volumes:
+      - ./:/app
+      - iotdash-data:/data
+
+  # Model training in JupyterLab on the GPU:  docker compose --profile train up trainer
+  # then open http://localhost:8888 (token: smartcar) -> training/train_road_obstacles.ipynb
+  trainer:
+    build: ./training
+    image: iot-smartcar-trainer
+    profiles: ["train"]
+    ports:
+      - "127.0.0.1:8888:8888"
+    volumes:
+      - ./:/workspace                 # notebook, models/, demo/ are written back to the project
+      - trainer-datasets:/datasets    # raw + prepared datasets (fast Linux filesystem, not synced to Windows)
+    shm_size: "6gb"                   # PyTorch dataloader workers
+    gpus: all
+
+volumes:
+  iotdash-data:
+  trainer-datasets:
